@@ -10,10 +10,10 @@ class smart_array{
 
     private:
     int index;
-
-    public:
     int size;
     int* arr;
+
+    public:
 
     smart_array(const int& size):size(size)
     {

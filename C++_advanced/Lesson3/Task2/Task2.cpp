@@ -11,10 +11,10 @@ class smart_array{
 
     private:
     int index;
-
-    public:
     int size;
     int* arr;
+
+    public:
 
     smart_array(const int &size):size(size)
     {
@@ -22,11 +22,23 @@ class smart_array{
         this->index = 0;
     }
     smart_array():smart_array(size){}
+    smart_array(const smart_array &other)
+    {
+        this->arr = new int [other.size];
+        for (int i = 0; i < other.size; i++)
+        {
+           this->arr[i] = other.arr[i];
+        }
+    }
 
     smart_array &operator = (const smart_array &other)
     {
         if (this != &other)
-            memcpy(this, &other, size);
+            {
+                this->~smart_array();
+                new(this) smart_array(other);
+            }
+            
         return *this;
     }
 
@@ -72,6 +84,8 @@ int main()
         new_array.addElement(34);
 
         arr = new_array;
+
+        std::cout << arr.getElement(1);
     }
     catch (const arr_exception& ex)
     {
