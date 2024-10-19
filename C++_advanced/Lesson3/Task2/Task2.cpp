@@ -22,10 +22,10 @@ class smart_array{
         this->index = 0;
     }
     smart_array():smart_array(size){}
-    smart_array(const smart_array &other)
+    smart_array(const smart_array &other):size(other.size)
     {
-        this->arr = new int [other.size];
-        for (int i = 0; i < other.size; i++)
+        this->arr = new int [size];
+        for (int i = 0; i < size; i++)
         {
            this->arr[i] = other.arr[i];
         }
@@ -84,8 +84,6 @@ int main()
         new_array.addElement(34);
 
         arr = new_array;
-
-        std::cout << arr.getElement(1);
     }
     catch (const arr_exception& ex)
     {
