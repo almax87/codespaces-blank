@@ -1,8 +1,6 @@
-
-#define CATCH_CONFIG_MAIN 
+#include <Catch2/catch_test_macros.hpp>
+#include <Catch2/catch_session.hpp>
 #include <iostream>
-#include <catch2/catch_test_macros.hpp>
-#include <catch2/catch_session.hpp>
 
 struct ListNode
 {
@@ -97,8 +95,34 @@ private:
     unsigned long m_size;
 };
 
-TEST_CASE ("test_empty", "[empty]")
+TEST_CASE ("test_empty", "[Empty]")
 {
     List* list = new List;
-    REQUIRE(list->Empty() == true);
+    CHECK(list->Empty() == true);
 };
+
+TEST_CASE("test_size", "[Size]")
+{
+    List* list = new List;
+    list->PushFront(1);
+    list->PushFront(2);
+    list->PushFront(3);
+
+    CHECK(list->Size() == 3);
+}
+
+TEST_CASE("test_clear", "[Clear]")
+{
+    List* list = new List;
+    list->PushFront(1);
+    list->PushBack(2);
+    list->PushFront(3);
+    list->Clear();
+
+    CHECK(list->Size() == 0);
+}
+
+int main(int argc, char* argv[])
+{
+    return Catch::Session().run(argc, argv);
+}
