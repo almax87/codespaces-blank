@@ -4,7 +4,8 @@
 #include <stdexcept>
 
 class arr_exception : public std::runtime_error{
-    using std::runtime_error :: runtime_error;
+    public:
+    arr_exception() : std::runtime_error("Выход за рамки массива!"){}
 };
 
 class smart_array{
@@ -45,7 +46,7 @@ class smart_array{
     void addElement(int el)
     {
         if (index >= size)
-            throw arr_exception("Выход за рамки массива!");
+            throw arr_exception();
         else
             {
                 arr[index] = el;
@@ -57,7 +58,7 @@ class smart_array{
     int getElement(const int& i)
     {
         if (i >= size)
-            throw arr_exception("Выход за рамки массива!");
+            throw arr_exception();
         else 
             return arr[i];
     }
@@ -84,6 +85,7 @@ int main()
         new_array.addElement(34);
 
         arr = new_array;
+        std::cout << arr.getElement(3) << std::endl;
     }
     catch (const arr_exception& ex)
     {
