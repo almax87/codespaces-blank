@@ -1,39 +1,41 @@
 #include <iostream>
 #include <vector>
-template <class T>
-class Counter
+#include <algorithm>
+
+
+struct Counter
 {
     private:
-        std::vector<T> numbers{};
-        T sum{};
-        T count{};
+    int sum{};
+    int count{};
+
     public:
-        Counter(std::vector<T> numbers):numbers(numbers){}
-        const std::vector<T> getNumbers()
+    void operator()(int n)
+    {
+        if (n%3 == 0)
         {
-            return numbers;
+            sum+=n;
+            count++;
         }
-        void operator()()
-        {
-            for (int i = 0; i < numbers.size(); i++)
-            {
-                if (numbers[i]%3 == 0)
-                {
-                    sum += numbers[i];
-                    count++;
-                }
-            }
-            std::cout << "[OUT]: get_sum() = " << sum << std::endl;
-            std::cout << "[OUT]: get_count() = " << count << std::endl;
-        }
+    }
+
+    int get_sum() const
+    {
+        return sum;
+    }
+
+    int get_count() const
+    {
+        return count;
+    }
 };
 
 template <class T>
 std::ostream& operator << (std::ostream &os, const std::vector<T>& list)
 {
-    for (int i = 0; i < list.size(); i++)
+    for (auto&i : list)
     {
-        os << list[i] << " ";
+        os << i << " ";
     }
     os << std::endl;
     return os;
@@ -41,10 +43,12 @@ std::ostream& operator << (std::ostream &os, const std::vector<T>& list)
 
 int main()
 {
-    auto test = Counter<short>({4, 1, 3, 6, 25, 54});
+    std::vector<int> numbers = { 4, 1, 3, 6, 25, 54 };
+    Counter counter = std::for_each(numbers.begin(), numbers.end(), Counter());
     std::cout << "IN: ";
-    std::cout << test.getNumbers();
-    test();
+    std::cout << numbers;
+    std::cout << "[OUT]: get_sum() = " << counter.get_sum() << std::endl;
+    std::cout << "[OUT]: get_count() = " << counter.get_count() << std::endl;
     
     return 0;
 }
