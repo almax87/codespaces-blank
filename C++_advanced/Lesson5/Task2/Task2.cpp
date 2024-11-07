@@ -16,9 +16,9 @@ class Matrix
     public:
         Matrix(const int& row, const int& col) : row{row}, col{col}, matrix{new T* [row]} 
         {
-            for (int i = 0; i < col; i++)
+            for (int i = 0; i < row; i++)
             {
-                matrix[i] = new T[col];
+                matrix[i] = new T[row];
             }
         }
 
@@ -27,14 +27,14 @@ class Matrix
             return matrix;
         }
 
-        T* operator[] (int index)
+        T* operator[] (const int& index)
         {
             if ((index < 0)||(index >= row))
                 throw arr_exception();
             return matrix[index];
         }
 
-        const T* operator[] (const int index) const
+        const T* operator[] (const int& index) const
         {
             if ((index < 0)||(index >= col))
                 throw arr_exception();
@@ -50,7 +50,7 @@ class Matrix
 
         ~ Matrix()
         {
-            for (int i = 0; i < col; i++)
+            for (int i = 0; i < row; i++)
                 delete[] matrix[i];
             delete[] matrix;
             matrix = nullptr;
