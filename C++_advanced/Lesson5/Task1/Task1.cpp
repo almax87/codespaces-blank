@@ -1,27 +1,34 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
+
 template <class T>
-    void square (T& a_)
+    T square (const T& a_)
     {
+        T a{};
         std::cout << "IN: " << a_ << std::endl;
-        a_ = pow(a_,2);
-        std::cout << "OUT: " << a_ << std::endl;
+        a = pow(a_,2);
+        std::cout << "OUT: " << a << std::endl;
+        return a;
     }
-template <>
-    void square (std::vector<int>& arr)
+
+template <class T>
+    std::vector<T> square (const std::vector<T>& arr)
     {
+        std::vector<T> vec{};
         std::cout << "IN: ";
-        for (auto i = 0; i < arr.size(); i++)
-            std::cout << arr[i] << " ";
+        for (const auto&i: arr)
+            std::cout << i << " ";
         std::cout << std::endl;
         std::cout << "OUT: ";
         for (auto i = 0; i < arr.size(); i++)
         {
-            arr[i] = pow(arr[i],2);
-            std::cout << arr[i] << " ";
+            vec.push_back(pow(arr[i],2));
+            std::cout << vec[i] << " ";
         }
         std::cout << std::endl;
+
+        return vec;
     }
 
 
