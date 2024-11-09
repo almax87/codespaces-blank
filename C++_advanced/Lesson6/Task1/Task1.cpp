@@ -7,7 +7,7 @@ int main()
 {
     std::string s{"Hello, world!!"};
     char ch{};
-    
+
     std::cout << "IN: " << s << std::endl;
     std::map <char, int> map_count{};
     for (auto& i : s)
@@ -19,6 +19,7 @@ int main()
     {
         map_count_sort.insert(std::make_pair(i.second, i.first));
     }
+    map_count.clear();
     std::cout << "OUT: " << std::endl;
     for (auto&i : map_count_sort)
     {
