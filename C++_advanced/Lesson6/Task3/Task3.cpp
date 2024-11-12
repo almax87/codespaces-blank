@@ -37,7 +37,9 @@ class Vector
                 capacity *= 2;
                 T* temp = new T[capacity];
                 memcpy(temp, a, capacity);
+                delete[] a;
                 a = temp;
+                temp = nullptr;
                 a[current] = value;
                 current++;
             }
