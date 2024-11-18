@@ -3,7 +3,7 @@
 #include <string>
 #include <memory>
 
-std::string operator+(std::string& lhs, std::string& rhs)
+std::string sum(std::string& lhs, std::string& rhs)
     {
         if(rhs.length() < lhs.length())
             std::swap (rhs, lhs);
@@ -31,21 +31,48 @@ std::string operator+(std::string& lhs, std::string& rhs)
         }
         return sum;
     }
-std::string operator*(std::string& lhs, int rhs)
+
+std::string multiply(std::string& lhs, std::string& rhs)
 {
     std::string mult{};
-    auto i = lhs.rbegin();
+
+    if (lhs.length() < rhs.length())
+        std::swap(lhs,rhs);
+
     int digit_mult{};
     int rest{};
-    while (i < lhs.rend())
+    std::vector <std::string> matrix;
+ 
+    for (auto j = rhs.rbegin(); j < rhs.rend(); j++)
     {
-        digit_mult = (static_cast<int>(*i)- 48)*rhs + rest;
-        mult.insert(mult.begin(),static_cast<char>(digit_mult%10 + 48));
-        rest = digit_mult/10;
-        ++i;
-        if((i == lhs.rend())&&(rest > 0))
+        for (auto i = lhs.rbegin(); i < lhs.rend(); i++)
+        {
+            digit_mult = (static_cast<int>(*i)- 48)*(static_cast<int>(*j)-48) + rest;
+            mult.insert(mult.begin(),static_cast<char>(digit_mult%10 + 48));
+            rest = digit_mult/10;
+            if((i == lhs.rend() - 1)&&(rest > 0))
                 mult.insert(mult.begin(),static_cast<char>(rest+48)); 
+        }
+        matrix.insert(matrix.begin(),mult);
+        mult.clear();
+        rest = 0;
     }
+
+    auto z = matrix.rbegin();
+    int count{};
+    while (z < matrix.rend())
+    {
+        for (int i = 0; i < count; i++)
+            z->push_back('0');
+        z++;
+        count++;
+    }
+
+    for (auto i : matrix)
+    {
+        mult = sum(mult, i);
+    }
+
     return mult;
 }
 
@@ -54,7 +81,7 @@ class BigInteger
     private:
         std::string number{};
     public: 
-        BigInteger(std::string number) : number(number){}
+        BigInteger(std::string str) : number(str){}
         BigInteger(const BigInteger& other) : number(std::move(other.number)){}
         BigInteger() : number(){}
 
@@ -67,58 +94,27 @@ class BigInteger
 
         BigInteger operator+ (BigInteger& other)
         { 
-            BigInteger sum (this->number + other.number);   
-            return sum;
+            BigInteger result (sum(this->number, other.number));   
+            return result;
         }
 
         BigInteger operator* (BigInteger& other)
         {
-            BigInteger mult;
-            if (other.number.length() > this->number.length())
-                *this = other;
-            auto i = number.rbegin();
-            auto j = other.number.rbegin();
-            std::vector <std::string> matrix{};
-            int count{};
-
-
-            while (j < other.number.rend())
-            {
-                matrix.insert(matrix.begin(), number*(static_cast<int>(*j - 48)));
-                j++;
-            }
-
-            auto z = matrix.rbegin();
-            while (z < matrix.rend())
-            {
-                for (int i = 0; i < count; i++)
-                    z->push_back('0');
-                z++;
-                count++;
-            }
-
-            std::cout << std::endl;
-
-            for (auto i : matrix)
-            {
-                std::cout << i << std::endl;
-            }
-
-            std::cout << std::endl;
-
-
-            for (auto i : matrix)
-            {
-                mult.number = mult.number + i;
-            }
-
+            BigInteger mult (multiply(this->number, other.number));
             return mult;         
+        }
+
+        BigInteger operator*(int a)
+        {
+            std::string number_str = std::to_string(a);
+            BigInteger mult (multiply(this->number, number_str));
+            return mult;
         }
 
         void print() const
         {
             for (auto&i : this->number)
-                std::cout << i << " ";
+                std::cout << i;
             std::cout << std::endl;
         }
 };
