@@ -1,19 +1,31 @@
 #pragma once
-#include "Parser.h"
-#include "Section.h"
+#include <iostream>
+#include <exception>
+#include <stdexcept>
 
 class no_var_except : public std::runtime_error
 {
-    private:
-        std::string message{"No variable found"};
     public:
-        no_var_except() : std::runtime_error(this->message)
+        no_var_except() : std::runtime_error("No var found")
         {
-            std::cout << get_message() << std::endl;
+            std::cout << what() << std::endl;
         }
+};
 
-        std::string get_message()
+class no_sec_except : public std::runtime_error
+{
+    public:
+        no_sec_except() : std::runtime_error("No section found")
         {
-            return message;
+            std::cout << what() << std::endl;
+        }
+};
+
+class syntax_except : public std::runtime_error
+{
+    public:
+        syntax_except() : std::runtime_error("Wrong syntax!!!")
+        {
+            std::cout << what() << std::endl;
         }
 };
