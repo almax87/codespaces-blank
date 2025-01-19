@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.30)
+project(IniParser)
+include_directories(lib)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../bin)
+add_executable(IniParser main.cpp)
+add_subdirectory(lib)
+target_link_libraries(IniParser IniParser_dynamic_lib)
